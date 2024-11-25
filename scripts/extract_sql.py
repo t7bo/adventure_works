@@ -111,7 +111,7 @@ if __name__ == "__main__":
     password = os.getenv("PASSWORD")
     schemas = ["Production", "Sales", "HumanResources", "Person", "Purchasing"]
 
-    output_dir = "./data"
+    output_dir = "./data/Azure"
 
     # Vérification des variables d'environnement
     if not all([server, database, username, password]):
