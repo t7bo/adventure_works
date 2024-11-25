@@ -1,0 +1,5 @@
+# Commande pour rendre le script install_odbc_driver.sh exécutable avant de le lancer
+chmod +x install_odbc_driver.sh
+
+# Execution du script
+./install_odbc_driver.sh
