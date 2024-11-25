@@ -1,0 +1,7 @@
+pyodbc==4.0.39
+azure-storage-blob==12.16.1
+polars==0.18.7
+pyarrow==13.0.0
+duckdb==0.8.1
+logging==0.5.1.2
+pandas==2.1.3
