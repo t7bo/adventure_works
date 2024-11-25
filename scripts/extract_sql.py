@@ -8,11 +8,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configuration du répertoire de logs
-log_directory = '../logs'
+log_directory = './logs'
 if not os.path.exists(log_directory):
     os.makedirs(log_directory)
 
-logging.basicConfig(filename='../logs/sql_extraction.log', level=logging.INFO,
+logging.basicConfig(filename='./logs/sql_extraction.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 def connect_to_sql_server(server, database, username, password):
