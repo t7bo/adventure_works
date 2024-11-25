@@ -1,3 +1,15 @@
+# Se positionner dans le répertoire du script
+cd "$(dirname "$0")"
+
+# Vérifier si .env existe
+if [[ ! -f ".env" ]]; then
+    echo "Le fichier .env est manquant ! Merci de renseigner les variables d'environnement dans un fichier .env"
+    exit 1
+fi
+
+# Installation du Driver ODBC
+echo 'INSTALLATION DU DRIVER ODBC'
+
 if ! [[ "18.04 20.04 22.04 23.04 24.04" == *"$(lsb_release -rs)"* ]];
 then
     echo "Ubuntu $(lsb_release -rs) is not currently supported.";
@@ -22,3 +34,17 @@ echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc
 source ~/.bashrc
 # optional: for unixODBC development headers
 sudo apt-get install -y unixodbc-dev
+
+# Création d'un VENV
+echo "CREATION D'UN VIRTUAL ENVIRONMENT"
+python3 -m venv venv
+source venv/bin/activate
+
+# Installation des librairies
+echo 'INSTALLATION DES PACKAGES/LIBRAIRIES PYTHON'
+python3 -m pip install --upgrade pip
+pip install -r requirements.txt
+
+# Lancement des scripts
+echo 'LANCEMENT DES SCRIPTS'
+python3 scripts/extract_sql.py
