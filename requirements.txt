@@ -4,3 +4,5 @@ polars==0.18.7
 pyarrow==13.0.0
 duckdb==0.8.1
 pandas
+numpy<2
+python-dotenv
