@@ -1,7 +1,3 @@
-# Télécharger le ODBC Driver
-# https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16
-
-# Imports
 import pyodbc
 import pandas as pd
 import logging
@@ -24,7 +20,6 @@ def connect_to_sql_server(server, database, username, password):
     Se connecter au serveur SQL.
     """
     try:
-        # Log des informations de connexion pour débogage
         logging.info(f"Connexion au serveur : {server}, base de données : {database}")
         
         connection = pyodbc.connect(
@@ -40,41 +35,15 @@ def connect_to_sql_server(server, database, username, password):
         logging.error(f"Erreur de connexion au serveur SQL : {e}")
         raise
 
-# def extract_data(connection, query, output_file):
-#     """
-#     Extraire les données en utilisant une requête SQL.
-#     Enregistrer les données dans un fichier .CSV.
-#     """
-#     # Créer le dossier data si nécessaire
-#     output_dir = os.path.dirname(output_file)
-#     if not os.path.exists(output_dir):
-#         os.makedirs(output_dir)
-#         logging.info(f"Le répertoire {output_dir} a été créé.")
-
-#     try:
-#         # Exécution de la requête SQL
-#         df = pd.read_sql_query(query, connection)
-
-#         # Log des premières lignes des données extraites pour débogage
-#         logging.info(f"Premières lignes des données extraites : {df.head()}")
-
-#         # Sauvegarde dans le fichier CSV
-#         df.to_csv(output_file, index=False)
-#         logging.info(f"Données extraites et sauvegardées dans {output_file}")
-#     except Exception as e:
-#         logging.error(f"Erreur lors de l'extraction des données : {e}")
-
 def get_tables_in_schema(connection, schema_name):
     """
     Obtenir la liste des tables dans un schéma spécifique.
     """
-
     query = f"""
     SELECT TABLE_NAME
     FROM INFORMATION_SCHEMA.TABLES
     WHERE TABLE_SCHEMA = '{schema_name}' AND TABLE_TYPE = 'BASE TABLE';
     """
-
     try:
         tables = pd.read_sql_query(query, connection)
         logging.info(f"{len(tables)} tables trouvées dans le schéma '{schema_name}': {tables['TABLE_NAME'].tolist()}")
@@ -83,12 +52,39 @@ def get_tables_in_schema(connection, schema_name):
         logging.error(f"Erreur lors de la récupération des tables pour le schéma '{schema_name}' : {e}")
         raise
 
+def get_compatible_columns(connection, schema_name, table_name):
+    """
+    Obtenir les colonnes compatibles (types de données non problématiques) pour une table donnée.
+    """
+    query = f"""
+    SELECT COLUMN_NAME
+    FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_SCHEMA = '{schema_name}' AND TABLE_NAME = '{table_name}'
+    AND DATA_TYPE NOT IN ('geometry', 'geography', 'xml', 'hierarchyid', 'sql_variant');
+    """
+    try:
+        columns = pd.read_sql_query(query, connection)
+        if columns.empty:
+            logging.warning(f"Aucune colonne compatible trouvée dans {schema_name}.{table_name}.")
+            return []
+        return columns['COLUMN_NAME'].tolist()
+    except Exception as e:
+        logging.error(f"Erreur lors de la récupération des colonnes compatibles pour {schema_name}.{table_name} : {e}")
+        raise
+
 def extract_table_to_csv(connection, table_name, schema_name, output_dir):
     """
     Extraire les données d'une table et les sauvegarder dans un fichier CSV.
     """
+    compatible_columns = get_compatible_columns(connection, schema_name, table_name)
+    if not compatible_columns:
+        logging.warning(f"Extraction ignorée pour {schema_name}.{table_name} (aucune colonne compatible).")
+        return
+    
+    column_list = ', '.join([f"[{col}]" for col in compatible_columns])
+    query = f"SELECT {column_list} FROM {schema_name}.{table_name}"
+    
     output_file = os.path.join(output_dir, schema_name, f"{table_name}.csv")
-    query = f"SELECT * FROM {schema_name}.{table_name}"
     
     # Créer le répertoire pour le schéma si nécessaire
     schema_dir = os.path.join(output_dir, schema_name)
@@ -98,7 +94,6 @@ def extract_table_to_csv(connection, table_name, schema_name, output_dir):
 
     try:
         df = pd.read_sql_query(query, connection)
-        
         if df.empty:
             logging.warning(f"La table {schema_name}.{table_name} est vide. Aucune donnée à sauvegarder.")
         else:
@@ -107,7 +102,6 @@ def extract_table_to_csv(connection, table_name, schema_name, output_dir):
     except Exception as e:
         logging.error(f"Erreur lors de l'extraction de {schema_name}.{table_name} : {e}")
         raise
-
 
 if __name__ == "__main__":
     # Variables d'environnement
