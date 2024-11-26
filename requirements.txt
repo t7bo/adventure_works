@@ -6,3 +6,5 @@ duckdb==0.8.1
 pandas
 numpy<2
 python-dotenv
+Pillow==9.5.0
+tqdm
