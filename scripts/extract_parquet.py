@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
     for blob in tqdm(list_blobs, desc="Téléchargement des fichiers", unit="fichier"):
         # Modifier le chemin pour télécharger dans un seul dossier (downloads)
-        download_path = f"./data/Parquet/downloads/{os.path.basename(blob)}"  # Utiliser le nom de base du blob comme nom de fichier
+        download_path = f"./data/parquet/downloads/{os.path.basename(blob)}"  # Utiliser le nom de base du blob comme nom de fichier
         os.makedirs(os.path.dirname(download_path), exist_ok=True)
         
         download_parquet_with_sas(full_url, blob, download_path)
@@ -86,7 +86,7 @@ if __name__ == "__main__":
         try:
             if "image" in df.columns:
                 # Créer le répertoire pour stocker les images téléchargées
-                image_dir = './data/Parquet/images'
+                image_dir = './data/parquet/images'
                 os.makedirs(image_dir, exist_ok=True)
                 # Extraire les données binaires de l'image à partir du dictionnaire
                 for index, row in df.iterrows():
@@ -103,7 +103,7 @@ if __name__ == "__main__":
    
         # Données textuelles --> CSV
         try:
-            data_dir = './data/Parquet/data'
+            data_dir = './data/parquet/data'
             os.makedirs(data_dir, exist_ok=True)
             csv_path = f"{data_dir}/{os.path.basename(blob)}.csv"
             df.drop(columns=['image'], errors='ignore').to_csv(csv_path, index=False)
