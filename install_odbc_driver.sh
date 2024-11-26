@@ -48,3 +48,5 @@ pip install -r requirements.txt
 # Lancement des scripts
 echo 'LANCEMENT DES SCRIPTS'
 python3 scripts/extract_sql.py
+python3 scripts/extract_parquet.py
+python3 scripts/extract_sql.py
