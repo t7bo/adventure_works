@@ -1,8 +1,0 @@
-# Commande pour rendre le script install_odbc_driver.sh exécutable avant de le lancer
-chmod +x install_odbc_driver.sh
-
-# Execution du script
-bash ./install_odbc_driver.sh
-
-# Vérification de l'installation
-odbcinst -q -d -n "ODBC Driver 18 for SQL Server"
