@@ -116,7 +116,7 @@ if __name__ == "__main__":
         container_url = generate_sas_url()
 
         # Dossiers spécifiques à examiner
-        target_folders = ["machine_learning", "nlp_data"]
+        target_folders = ["nlp_data", "machine_learning"]
 
         # Extensions des fichiers à rechercher
         extensions = [".csv", ".zip"]
