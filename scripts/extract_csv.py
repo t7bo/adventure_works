@@ -12,7 +12,7 @@ import pandas as pd
 load_dotenv()
 
 # Configuration des logs
-logging.basicConfig(filename="file_search.log", level=logging.INFO, 
+logging.basicConfig(filename="logs/extract_csv.log", level=logging.INFO, 
                     format="%(asctime)s - %(levelname)s - %(message)s")
 
 def generate_sas_token(account_name, account_key, container_name):

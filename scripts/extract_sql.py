@@ -109,7 +109,7 @@ if __name__ == "__main__":
     database = os.getenv("DATABASE")
     username = os.getenv("USERNAME")
     password = os.getenv("PASSWORD")
-    schemas = ["Production", "Sales", "HumanResources", "Person", "Purchasing"]
+    schemas = ["Production", "Sales", "Person"]
 
     output_dir = "./data/azure"
 
