@@ -3,8 +3,8 @@ azure-storage-blob==12.24.0
 polars==0.18.7
 pyarrow==13.0.0
 duckdb==0.8.1
-pandas
-numpy<2
-python-dotenv
+pandas==2.2.3
+numpy==1.26.4
+python-dotenv==1.0.1
 Pillow==9.5.0
-tqdm
+tqdm==4.67.1
