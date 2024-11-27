@@ -192,5 +192,5 @@ pyrightconfig.json
 
 # data/
 
-# .sh_template
+# *.sh_template
 # .cron_template

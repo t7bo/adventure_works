@@ -1,5 +1,0 @@
-# Ouvrir le fichier crontab pour l'utilisateur actuel
-crontab -e
-
-# Ajouter cette ligne de code dans le fichier crontab pour exécuter le script à des heures creuses (entre 20h et 8h)
-0 20-23,0-8 * * * mkdir -p /home/utilisateur/Documents/DEV-IA/projets/adventure_works/scripts/logs /home/utilisateur/Documents/DEV-IA/projets/adventure_works/venv/bin/python3 /home/utilisateur/Documents/DEV-IA/projets/adventure_works/scripts/extract_sql.py
