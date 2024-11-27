@@ -53,4 +53,4 @@ python3 scripts/generate_env_file.py
 echo "LANCEMENT DES SCRIPTS D'EXTRACTION DE DONNEES"
 python3 scripts/extract_sql.py
 python3 scripts/extract_parquet.py
-python3 scripts/extract_sql.py
+python3 scripts/extract_csv.py
